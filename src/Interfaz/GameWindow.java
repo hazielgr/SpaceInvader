@@ -9,6 +9,8 @@ import Game.Basic;
 import Game.Spaceship;
 import java.awt.Color;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -18,13 +20,28 @@ import javax.swing.*;
 public class GameWindow extends JFrame {
     private ImageIcon imageBackground;
     private Spaceship spaceship;
-
+    private Thread movE;
     private Container contenedor;
 
     
     public GameWindow(Spaceship spaceship){
         this.spaceship = spaceship;
         this.imageBackground = new ImageIcon("Resources/background.jpg");
+        this.movE = new Thread(new Runnable(){
+        public void run(){
+            while(movE.isAlive()){
+                try {
+                    
+                    contenedor.repaint();
+                    movE.sleep(20);
+                    
+                } catch (InterruptedException ex) {
+                    
+                    Logger.getLogger(GameWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    });
 
     }
     
@@ -58,6 +75,8 @@ public class GameWindow extends JFrame {
         contenedor.setBackground(Color.black);
         contenedor.add(panels,BorderLayout.EAST);
         contenedor.add(spacep);
+        
+        movE.start();
         
     }
     

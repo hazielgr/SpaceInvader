@@ -19,6 +19,7 @@ public class Manager {
         this.spaceship = new Spaceship();
         
         gamewindow = new GameWindow(spaceship);
+        gamewindow.addKeyListener(spaceship);
         gamewindow.init();
     }
     
