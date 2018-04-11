@@ -7,6 +7,7 @@ package Main;
 
 import Game.Spaceship;
 import Interfaz.GameWindow;
+import Interfaz.Manager;
 
 /**
  *
@@ -14,9 +15,7 @@ import Interfaz.GameWindow;
  */
 public class Main {
     public static void main(String args[]){
-        Spaceship nave = new Spaceship();
-        GameWindow ventana = new GameWindow(nave);
-        ventana.init();
-        ventana.show();
+        Manager manager = new Manager();
+        manager.showGame();
     }
 }
