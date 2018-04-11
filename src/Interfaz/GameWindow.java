@@ -57,8 +57,15 @@ public class GameWindow extends JFrame {
         contenedor = getContentPane();
         contenedor.setBackground(Color.black);
         contenedor.add(panels,BorderLayout.EAST);
-
+        contenedor.add(spacep);
         
     }
+    
+    private JPanel spacep = new JPanel(){
+    public void paintComponent(Graphics g){
+        g.drawImage(spaceship.getImage(),spaceship.getXpos(),spaceship.getYpos(),110,110,this);
+        
+    }
+    };  
     
 }
