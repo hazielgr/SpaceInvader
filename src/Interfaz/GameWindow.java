@@ -6,6 +6,7 @@
 package Interfaz;
 
 import Game.Basic;
+import Game.Enemy;
 import Game.Spaceship;
 import java.awt.Color;
 import java.awt.*;
@@ -22,16 +23,25 @@ public class GameWindow extends JFrame {
     private Spaceship spaceship;
     private Thread movE;
     private Container contenedor;
+    private int paintEne;
+    private Basic basic;
+    private Enemy enemy = new Enemy();
+    private Enemy enemy2 = new Enemy();
+    private Enemy enemy3 = new Enemy();
 
     
     public GameWindow(Spaceship spaceship){
         this.spaceship = spaceship;
+        this.basic = new Basic();
+        basic.addEnemy(enemy);
+        basic.addEnemy(enemy2);
+        basic.addEnemy(enemy3);
         this.imageBackground = new ImageIcon("Resources/background.jpg");
         this.movE = new Thread(new Runnable(){
         public void run(){
             while(movE.isAlive()){
                 try {
-                    
+                    contenedor.add(enemyp);
                     contenedor.repaint();
                     movE.sleep(20);
                     
@@ -76,6 +86,7 @@ public class GameWindow extends JFrame {
         contenedor.add(panels,BorderLayout.EAST);
         contenedor.add(spacep);
         
+        
         movE.start();
         
     }
@@ -86,5 +97,22 @@ public class GameWindow extends JFrame {
         
     }
     };  
+    
+    private JPanel enemyp = new JPanel(){
+    public void paintComponent(Graphics g){
+        Enemy temp = basic.getHead();
+        paintEne=0;
+        if(temp==null){
+            System.out.println("NEXT LEVEL");
+        }
+        while(temp !=null){
+            g.drawImage(temp.getImage(),temp.getXpos()+paintEne,temp.getYpos(),100,50,this);
+            temp=temp.getNext();
+            paintEne+=110;        
+        }
+    }
+    };
+    
+    
     
 }
