@@ -107,6 +107,29 @@ public class GameWindow extends JFrame {
         }
         while(temp !=null){
             g.drawImage(temp.getImage(),temp.getXpos()+paintEne,temp.getYpos(),100,50,this);
+            if(temp.getXpos()<530 & temp.getMovX()==true){
+		temp.moveR();
+            }
+            else if(temp.getXpos()>530 & temp.getMovY()==true) {
+		for(int i=0;i<30;i+=1 ) {
+                    temp.moveY();    
+		}
+		temp.setMovX(false);
+		temp.setMovY(false);
+            } 
+            else if(temp.getXpos()>530 & temp.getMovX()==false) {
+		temp.moveL();	
+            }
+            else if(temp.getXpos()<530 & temp.getMovX()==false & temp.getXpos()>9) {
+		temp.moveL();
+            }
+            else if(temp.getXpos()<9 & temp.getMovY()==false) {
+                for(int i=0;i<30;i+=1 ) {
+                    temp.moveY();
+                }
+                temp.setMovX(true);
+                temp.setMovY(true);
+            }
             temp=temp.getNext();
             paintEne+=110;        
         }

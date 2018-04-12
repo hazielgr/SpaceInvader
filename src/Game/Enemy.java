@@ -11,7 +11,8 @@ public class Enemy {
 	private int y_pos = 150;
 	private int speed ;
         private Enemy next;
-        
+        private boolean movX = true;
+        private boolean movY = true;
         
 	
 	public Enemy(){
@@ -54,7 +55,20 @@ public class Enemy {
       public void setNext(Enemy e){
             this.next=e;
         }
-      
+      public void setMovX(boolean movimiento) {
+		this.movX = movimiento;
+	}
+	
+	public boolean getMovX() {
+		return this.movX;
+	}
+	public void setMovY(boolean movimiento) {
+		this.movY = movimiento;
+	}
+	
+	public boolean getMovY() {
+		return this.movY;
+	}
       
 }
 
