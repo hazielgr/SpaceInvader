@@ -1,20 +1,28 @@
 package Game;
 
+import Interfaz.GameWindow;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 
-
-public class Spaceship implements KeyListener{
-    private int x_pos = 300;
+public class Spaceship implements KeyListener {
+    private int x_pos;
     private int life;
-    private int y_pos = 670;
+    private int y_pos;
     private Image spaceship;
+    private Bullet bullet;
     private Thread mov;
+    private boolean bullMov = false;
+    private BulletList bullL;
     
     public Spaceship(){
+        this.bullet = new Bullet();
+        this.bullL = new BulletList();
+        this.y_pos = 670;
+        this.x_pos = 300;
         this.spaceship = Toolkit.getDefaultToolkit().getImage("Resources/Spaceship.png");
     }
 
@@ -24,11 +32,11 @@ public class Spaceship implements KeyListener{
 	
 	
     public int getXpos() {
-        return x_pos;
+        return this.x_pos;
     }
     
     public int getYpos() {
-        return y_pos;
+        return this.y_pos;
     }
 	
     public void setYpos(int y_pos) {
@@ -74,8 +82,8 @@ public class Spaceship implements KeyListener{
                     }
                 }
                 if(e.getKeyCode() == KeyEvent.VK_SPACE){
-                    System.out.println("    Disparo    ");
-                    
+                    createBull();
+                    bullMov=true;
                 }
                 try {
                     mov.sleep(40);
@@ -88,6 +96,7 @@ public class Spaceship implements KeyListener{
         mov.start();
     }
 
+        @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             this.x_pos+=0;
@@ -102,8 +111,27 @@ public class Spaceship implements KeyListener{
         }
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {
     }
-   
+    
+    public Bullet getBullet(){
+        return this.bullet;
+    }
+    
+    public void createBull(){
+        Bullet bull = new Bullet();
+        bull.setXpos(this.x_pos+5);
+        bullL.addBullet(bull);
         
+    }
+    
+    public boolean getBullMov(){
+        return this.bullMov;
+    }
+    
+    public BulletList getBullets(){
+        return this.bullL;
+    }
+
 }

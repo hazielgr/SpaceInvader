@@ -6,10 +6,13 @@
 package Interfaz;
 
 import Game.Basic;
+import Game.Bullet;
 import Game.Enemy;
 import Game.Spaceship;
 import java.awt.Color;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -20,30 +23,49 @@ import javax.swing.*;
  */
 public class GameWindow extends JFrame {
     private ImageIcon imageBackground;
-    private Spaceship spaceship;
-    private Thread movE;
-    private Container contenedor;
-    private int paintEne;
+   
     private Basic basic;
-    private Enemy enemy = new Enemy();
-    private Enemy enemy2 = new Enemy();
-    private Enemy enemy3 = new Enemy();
-
+    private Spaceship spaceship;
+    public static Enemy temp2;
+    private int paintEne;
+    private int limitX = 530;
+    private Bullet bullet;
+    private Container contenedor;
+    private Thread movE;
+    private int cont2=5;
+    private int cont=0;
+    public static int cont1=0;
     
-    public GameWindow(Spaceship spaceship){
+    
+    
+    public GameWindow(Basic basic, Spaceship spaceship){
+        this.basic = basic;
+        
         this.spaceship = spaceship;
-        this.basic = new Basic();
-        basic.addEnemy(enemy);
-        basic.addEnemy(enemy2);
-        basic.addEnemy(enemy3);
         this.imageBackground = new ImageIcon("Resources/background.jpg");
+        this.bullet = spaceship.getBullet();
+        
+        
+        
         this.movE = new Thread(new Runnable(){
         public void run(){
             while(movE.isAlive()){
                 try {
+                    if(spaceship.getBullMov()==true){
+                        Bullet temp3 = spaceship.getBullets().getHead();
+                        while(temp3!=null){
+                        temp3.move();
+                        temp3.getlbl().setBounds(temp3.getXpos(), temp3.getYpos(),80,60);
+                        contenedor.add(temp3.getlbl());
+                        temp3=temp3.getNext();
+                        }
+                        movE.join(20);
+                    }
+                    else{
                     contenedor.add(enemyp);
+                    movE.join(20);
+                    }
                     contenedor.repaint();
-                    movE.sleep(20);
                     
                 } catch (InterruptedException ex) {
                     
@@ -52,7 +74,7 @@ public class GameWindow extends JFrame {
             }
         }
     });
-
+      
     }
     
     
@@ -76,27 +98,24 @@ public class GameWindow extends JFrame {
         lbl.setBorder(BorderFactory.createMatteBorder(0,5, 0, 0, Color.decode("#2F4F4F")));
         
         
+        
+        
         JPanel panels =  new JPanel();
         panels.setPreferredSize(new Dimension(300,300));
         panels.setLayout(new BorderLayout());
         panels.add(lbl);
-      
+        
+         
         contenedor = getContentPane();
         contenedor.setBackground(Color.black);
         contenedor.add(panels,BorderLayout.EAST);
+        
         contenedor.add(spacep);
-        
-        
+
         movE.start();
         
-    }
-    
-    private JPanel spacep = new JPanel(){
-    public void paintComponent(Graphics g){
-        g.drawImage(spaceship.getImage(),spaceship.getXpos(),spaceship.getYpos(),110,110,this);
         
     }
-    };  
     
     private JPanel enemyp = new JPanel(){
     public void paintComponent(Graphics g){
@@ -107,20 +126,20 @@ public class GameWindow extends JFrame {
         }
         while(temp !=null){
             g.drawImage(temp.getImage(),temp.getXpos()+paintEne,temp.getYpos(),100,50,this);
-            if(temp.getXpos()<530 & temp.getMovX()==true){
+            if(temp.getXpos()<limitX & temp.getMovX()==true){
 		temp.moveR();
             }
-            else if(temp.getXpos()>530 & temp.getMovY()==true) {
+            else if(temp.getXpos()>limitX & temp.getMovY()==true) {
 		for(int i=0;i<30;i+=1 ) {
                     temp.moveY();    
 		}
 		temp.setMovX(false);
 		temp.setMovY(false);
             } 
-            else if(temp.getXpos()>530 & temp.getMovX()==false) {
+            else if(temp.getXpos()>limitX & temp.getMovX()==false) {
 		temp.moveL();	
             }
-            else if(temp.getXpos()<530 & temp.getMovX()==false & temp.getXpos()>9) {
+            else if(temp.getXpos()<limitX & temp.getMovX()==false & temp.getXpos()>9) {
 		temp.moveL();
             }
             else if(temp.getXpos()<9 & temp.getMovY()==false) {
@@ -136,6 +155,41 @@ public class GameWindow extends JFrame {
     }
     };
     
+    private JPanel spacep = new JPanel(){
+    public void paintComponent(Graphics g){
+      if(basic.empty()==true){
+          g.drawImage(spaceship.getImage(),spaceship.getXpos(),spaceship.getYpos(),110,110,this);
+      }
+      else{
+        while(cont<=cont2){
+        temp2=basic.getEnemy(cont);
+        int pos = GameWindow.getCont(cont);
+            if(temp2.getXpos()+pos-30<bullet.getXpos() & bullet.getXpos()<temp2.getXpos()+pos+30 & temp2.getYpos()-30<bullet.getYpos() & bullet.getYpos()<temp2.getYpos()+30 & bullet.getMov()==true ){
+                limitX+=110;
+                contenedor.remove(bullet.getlbl());
+                bullet.remove();
+                basic.DeleteEne(cont);
+                g.drawImage(spaceship.getImage(),spaceship.getXpos(),spaceship.getYpos(),110,110,this);
+                bullet.setMov(false);
+                cont2--;
+                break;
+            }
+            else{
+            cont++;
+            }
+        }
+        cont=0;
+        
+      }
+      g.drawImage(spaceship.getImage(),spaceship.getXpos(),spaceship.getYpos(),110,110,this);
+      
+      
+    }
+    };     
     
-    
+    public  static int getCont(int x){
+        int conteo=110*x;
+        return conteo;
+    }
+       
 }

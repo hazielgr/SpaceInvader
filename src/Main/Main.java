@@ -5,8 +5,8 @@
  */
 package Main;
 
-import Game.Spaceship;
-import Interfaz.GameWindow;
+
+
 import Interfaz.Manager;
 
 /**
@@ -14,8 +14,16 @@ import Interfaz.Manager;
  * @author mario
  */
 public class Main {
-    public static void main(String args[]){
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
         Manager manager = new Manager();
         manager.showGame();
+        
+    
+        
     }
+    
 }

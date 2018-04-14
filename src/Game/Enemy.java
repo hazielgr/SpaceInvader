@@ -4,50 +4,52 @@ import java.awt.*;
 
 
 public class Enemy {
-	
+	private boolean movX = true;
+        private boolean movY = true;
 	private int life;
 	private Image enemy;
-	private int x_pos = 150;
-	private int y_pos = 150;
-	private int speed ;
+	private int x_pos;
+	private int y_pos;
+	private int speed;
         private Enemy next;
-        private boolean movX = true;
-        private boolean movY = true;
+        
         
 	
 	public Enemy(){
+            this.x_pos=150;
+            this.y_pos=150;
             this.next=null;
             this.enemy =  Toolkit.getDefaultToolkit().getImage("Resources/enemy.png");
+            this.speed = 9;
 	}
 	
 	public int getXpos() {
-		return this.x_pos;
+            return this.x_pos;
 	}
         
-	
 	public int getYpos() {
-		return y_pos;
+            return this.y_pos;
 	}
-	public int getSpeed() {
-		return this.speed;
+	public void setSpeed(int speed) {
+            this.speed =speed;
 	}
 	
 	public int getLife() {
-		return this.life;
+            return this.life;
 	}
 	
 	public Image getImage(){
-		return this.enemy;
+            return this.enemy;
 	}
 	
 	public void moveR() {
-		x_pos+=8;
+            this.x_pos+=this.speed;
 	}
 	public void moveL() {
-		x_pos-=8;
+            this.x_pos-=this.speed;
 	}
 	public void moveY() {
-		y_pos+=1;
+            this.y_pos+=1;
 	}
         public Enemy getNext(){
             return this.next;
@@ -55,6 +57,7 @@ public class Enemy {
       public void setNext(Enemy e){
             this.next=e;
         }
+      
       public void setMovX(boolean movimiento) {
 		this.movX = movimiento;
 	}

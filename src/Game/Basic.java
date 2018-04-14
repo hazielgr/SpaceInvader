@@ -1,9 +1,11 @@
 package Game;
 
+import Interfaz.GameWindow;
+
 public class Basic extends Enemy{
-	public Enemy head;
-	int size;
-	
+	private Enemy head;
+	private int size;
+
         
 	public Basic() {
 		this.head = null;
@@ -30,11 +32,6 @@ public class Basic extends Enemy{
                     this.size++;
 		}
 	}
-	
-	public int getSize() {
-		return this.size;
-	}
-	
 	
         public Enemy getEnemy(int index) {
 		int contador=0;
@@ -63,16 +60,25 @@ public class Basic extends Enemy{
         
         public void DeleteEne(int indice){
             int cont=0;
+            GameWindow.temp2 = this.getEnemy(indice);
             if(this.size==0){
                 System.out.println("lista vacia 2");
             }
             else{
                 Enemy temp=this.head;
+                if(this.head.getNext()==null){
+                    this.head=null;
+                }
                 while(cont<indice-1){
                    temp=temp.getNext();
                    cont++;
                 }
-                temp.setNext(temp.getNext().getNext());
+                if(temp.getNext()==null){
+                    this.head=null;
+                }
+                else{
+                    temp.setNext(temp.getNext().getNext());
+                }
                 size--;
             }
         }
